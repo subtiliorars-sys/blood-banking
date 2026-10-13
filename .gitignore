@@ -34,3 +34,4 @@ htmlcov/
 # Local data / secrets
 *.log
 .env
+data/
