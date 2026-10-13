@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Banking — Antibody ID</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <!-- CHROME -->
+  <header class="chrome">
+    <div class="chrome__titlebar">
+      <div class="chrome__titlebar-btn"></div>
+      <div class="chrome__titlebar-btn chrome__titlebar-btn--right"></div>
+      <div class="chrome__titlebar-btn chrome__titlebar-btn--right"></div>
+      <div class="chrome__titlebar-text">Blood Banking — Antibody ID</div>
+    </div>
+    <div class="chrome__content">
+      <div class="chrome__content-left">
+        <div class="chrome__content-btn"></div>
+        <div class="chrome__content-btn chrome__content-btn--right"></div>
+        <div class="chrome__content-btn chrome__content-btn--right"></div>
+      </div>
+      <div class="chrome__content-center">
+        <span class="chrome__content-badge">version 0.1.0</span>
+      </div>
+      <div class="chrome__content-right">
+        <div class="chrome__content-btn"></div>
+        <div class="chrome__content-btn chrome__content-btn--right"></div>
+        <div class="chrome__content-btn chrome__content-btn--right"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <svg class="sidebar__brand-icon" viewBox="0 0 24 24" width="22" height="22">
+          <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+        </svg>
+        <span class="sidebar__brand-text">Blood Bank ID</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__nav-item sidebar__nav-item--active" data-view="panel">
+          <span class="sidebar__nav-icon">◷</span> Panel
+        </a>
+        <a href="#" class="sidebar__nav-item" data-view="result">
+          <span class="sidebar__nav-icon">◷</span> Results
+        </a>
+        <a href="#" class="sidebar__nav-item" data-view="history">
+          <span class="sidebar__nav-icon">◷</span> History
+        </a>
+        <a href="#" class="sidebar__nav-item" data-view="settings">
+          <span class="sidebar__nav-icon">◷</span> Settings
+        </a>
+      </nav>
+      <div class="sidebar__footer">
+        <span class="sidebar__disclaimer">Not for clinical use. Technologist review required.</span>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <!-- VIEWS -->
+      <section id="view-panel" class="view view--active">
+        <div class="panel-head">
+          <h1>Antibody Panel Analyzer</h1>
+          <p class="subtitle">Load an antigram to identify single and two-antibody cases.</p>
+        </div>
+
+        <div class="card">
+          <div class="card__body">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="patient-id">Patient ID</label>
+                <input id="patient-id" type="text" placeholder="e.g. PT-001">
+              </div>
+              <div class="form-group">
+                <label for="serum">Serum / Plasma</label>
+                <input id="serum" type="text" placeholder="e.g. serum-A">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="antigram-json">Antigram JSON</label>
+              <textarea id="antigram-json" class="code-editor" placeholder='{"patient_id":"PT-K1","serum":"serum-A","cells":{"C1":["K"],"C2":["K"],"C3":["K"],"C4":["K"],"C5":["K"]},"reactions":{"C1":{"grade":3},"C2":{"grade":3},"C3":{"grade":3},"C4":{"grade":3},"C5":{"grade":3}}}'></textarea>
+            </div>
+
+            <div class="form-row form-row--actions">
+              <button id="btn-analyze" class="btn btn--primary">Analyze Panel</button>
+              <button id="btn-load-k" class="btn btn--secondary">Load: anti-K</button>
+              <button id="btn-load-k2" class="btn btn--secondary">Load: E+K</button>
+              <button id="btn-load-auto" class="btn btn--secondary">Load: auto-control</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="help">
+          <h2>Quick start</h2>
+          <ol class="help__list">
+            <li>Paste a panel in the JSON editor above.</li>
+            <li>Each panel cell needs a phenotype and a reaction grade (0 = negative).</li>
+            <li>Click <strong>Analyze Panel</strong>.</li>
+            <li>Read results, and confirm with a technologist.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="view-result" class="view">
+        <div class="panel-head">
+          <h1>Identification Results</h1>
+        </div>
+
+        <div id="result-note" class="alert alert--info">
+          Load a panel and click Analyze to see results here.
+        </div>
+
+        <div id="result-content" class="result" hidden>
+          <div class="card result__card">
+            <div class="result__header">
+              <span class="badge badge--<%= statusBadge %>"><%= statusBadgeText %></span>
+              <h2><%= singleAntibody %></h2>
+              <p class="result__score">confidence <%= singleScore %> · <%= cellsChecked %> cells checked</p>
+            </div>
+            <div class="tab-group">
+              <button class="tab-btn tab-btn--active" data-tab="identity">Identity</button>
+              <button class="tab-btn" data-tab="exclusions">Exclusions</button>
+              <button class="tab-btn" data-tab="pairs">Pairs (2-antibody)</button>
+            </div>
+
+            <div class="tab-content tab-content--active" id="tab-identity">
+              <table class="table">
+                <thead>
+                  <tr><th>Cell</th><th>Phenotype</th><th>Grade</th><th>Status</th></tr>
+                </thead>
+                <tbody id="identity-body"></tbody>
+              </table>
+            </div>
+
+            <div class="tab-content" id="tab-exclusions">
+              <table class="table table--striped">
+                <thead>
+                  <tr><th>Ruled out as single antibody</th></tr>
+                </thead>
+                <tbody id="exclusions-body"></tbody>
+              </table>
+            </div>
+
+            <div class="tab-content" id="tab-pairs">
+              <table class="table table--striped">
+                <thead>
+                  <tr><th>Pair</th><th>Combined confidence</th><th>Status</th></tr>
+                </thead>
+                <tbody id="pairs-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card result__card result__card--warn">
+            <h2 class="result__card-title">Flags &amp; disclaimer</h2>
+            <ul class="alert-list" id="flags-list"></ul>
+            <p class="disclaimer">For technologist review. Not for clinical decision-making.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-history" class="view">
+        <div class="panel-head">
+          <h1>Analysis History</h1>
+        </div>
+        <div id="history-note" class="alert alert--info">
+          Run analyses to populate here.
+        </div>
+        <div id="history-list" class="history" hidden>
+          <div class="card">
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr><th>Patient</th><th>Date</th><th>Single</th><th>Pairs</th><th>Status</th></tr>
+                </thead>
+                <tbody id="history-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view">
+        <div class="panel-head">
+          <h1>Settings</h1>
+        </div>
+        <div class="card">
+          <div class="form-group">
+            <label for="engine-path">Engine path (abid)</label>
+            <input id="engine-path" type="text" value="abid">
+            <p class="form-hint">Override if abid is not on your PATH.</p>
+          </div>
+          <div class="form-group">
+            <label for="auto-update">Auto-check for engine updates</label>
+            <label class="toggle">
+              <input id="auto-update" type="checkbox" checked>
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+          <div class="form-group">
+            <button id="btn-test-engine" class="btn btn--secondary">Test Engine</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
