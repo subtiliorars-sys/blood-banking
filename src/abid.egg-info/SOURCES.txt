@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/abid/__init__.py
+src/abid/antibody.py
+src/abid/antigram.py
+src/abid/rules.py
+src/abid/version.py
+src/abid.egg-info/PKG-INFO
+src/abid.egg-info/SOURCES.txt
+src/abid.egg-info/dependency_links.txt
+src/abid.egg-info/requires.txt
+src/abid.egg-info/top_level.txt
+src/abid/scripts/cli.py
+tests/test_antigram.py

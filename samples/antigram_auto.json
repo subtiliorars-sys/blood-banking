@@ -1,0 +1,19 @@
+{
+  "patient_id": "PT-AC1",
+  "serum": "serum-X",
+  "cells": {
+    "C1": ["K"],
+    "C2": ["K"],
+    "C3": ["D"],
+    "C4": ["k"],
+    "C5": ["e"]
+  },
+  "reactions": {
+    "C1": {"grade": 3},
+    "C2": {"grade": 3},
+    "C3": {"grade": 3, "autocontrol": true},
+    "C4": {"grade": 1},
+    "C5": {"grade": 1}
+  },
+  "comments": ["C3 is an auto control and is positive -> possible autoantibody."]
+}

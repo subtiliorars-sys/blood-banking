@@ -1,0 +1,25 @@
+{
+  "patient_id": "PT-E+K",
+  "serum": "serum-D",
+  "cells": {
+    "C1": ["E", "K"],
+    "C2": ["E", "K"],
+    "C3": ["E", "K"],
+    "C4": ["E", "K"],
+    "C5": ["E", "K"],
+    "C6": ["E"],
+    "C7": ["K"],
+    "C8": ["e", "k"]
+  },
+  "reactions": {
+    "C1": {"grade": 3},
+    "C2": {"grade": 3},
+    "C3": {"grade": 3},
+    "C4": {"grade": 3},
+    "C5": {"grade": 3},
+    "C6": {"grade": 2},
+    "C7": {"grade": 2},
+    "C8": {"grade": 0}
+  },
+  "comments": ["E+ K- cell C6; E- K+ cell C7; double negative C8."]
+}

@@ -1,0 +1,19 @@
+{
+  "patient_id": "PT-K1",
+  "serum": "serum-A",
+  "cells": {
+    "C1": ["K"],
+    "C2": ["K"],
+    "C3": ["K"],
+    "C4": ["K"],
+    "C5": ["K"]
+  },
+  "reactions": {
+    "C1": {"grade": 3},
+    "C2": {"grade": 3},
+    "C3": {"grade": 3},
+    "C4": {"grade": 3},
+    "C5": {"grade": 3}
+  },
+  "comments": ["Positive cells are all K+. Single antibody: anti-K."]
+}

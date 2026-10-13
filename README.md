@@ -1,0 +1,52 @@
+# abid — Antibody Identification Engine
+
+A rule-based antibody identification program for blood banking. Given a patient's
+antigram (panel cell reactions + cell phenotypes), it returns a **single**
+antibody with explicit exclusions and a ranked list of **two-antibody candidate
+pairs**, using standard exclusion logic as described in the 12th edition of
+Dacie & Lewis, *Practical Haematology*.
+
+## Role
+
+- Rank single antibody candidates by coverage of positive panel cells.
+- Produce explicit rule-outs for a single antibody.
+- Detect two-antibody combinations and rank them by combined coverage.
+- Flag auto-control-positive and otherwise ambiguous panels for technologist review.
+
+## Status
+
+**Not for clinical decision-making.** Always confirm with a trained
+blood bank technologist. The program is a screening/decision-support aid.
+
+## Install
+
+```bash
+cd blood-banking
+pip install -e ".[dev]"
+```
+
+## Run
+
+```bash
+# python -m abid --patient <ID>
+# or with pytest
+pytest
+```
+
+## Data model
+
+- `Antigram` — patient panel: `cells` (phenotype) + `reactions` (grade) + `autocontrol` flags.
+- `Antigen` — short codes: `D, C, c, E, e, K, k, Fya, Fyb, Jka, Jkb, S, s, M, N, Lua, Leb, P1, Lea, A1, B, Jra, Wra`.
+- `AntibodyCandidate` — recognized clinically significant antibodies from `ANTIBODY_CATALOG`.
+
+## Test panel (single antibody example)
+
+A representative example antigram for each common antibody is embedded in `tests/test_antigram.py`.
+
+## Output
+
+`IdentificationResult.to_dict()` returns a JSON-serializable dict with:
+
+- `single_antibody` + `confident_single` + `single_score`
+- `single_exclusions`
+- `pairs` + `confident_pairs` + `pair_scores`
