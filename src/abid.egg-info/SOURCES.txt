@@ -3,6 +3,9 @@ pyproject.toml
 src/abid/__init__.py
 src/abid/antibody.py
 src/abid/antigram.py
+src/abid/decompose.py
+src/abid/export.py
+src/abid/persistence.py
 src/abid/rules.py
 src/abid/version.py
 src/abid.egg-info/PKG-INFO
@@ -12,3 +15,4 @@ src/abid.egg-info/requires.txt
 src/abid.egg-info/top_level.txt
 src/abid/scripts/cli.py
 tests/test_antigram.py
+tests/test_export.py

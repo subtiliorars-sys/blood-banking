@@ -33,7 +33,7 @@ _SRC = Path(__file__).resolve().parent.parent / "src"
 if _SRC.exists():
     sys.path.insert(0, str(_SRC))
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-elif str(Path(__file__).resolve().parent.parent.parent / "src").exists():
+elif (Path(__file__).resolve().parent.parent.parent / "src").exists():
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from abid import __version__
